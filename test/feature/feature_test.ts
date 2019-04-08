@@ -22,17 +22,16 @@ describe('Airport features', function() {
   })
 
   describe('Given have instructed airport to tell a plane to take off', function() {
-    it('should set plane as airborne when airport instructed to take it off', function () {  
+    beforeEach(function() {
       this.airport.land(this.plane);
       this.airport.takeOff(this.plane);
+    })
 
+    it('should set plane as airborne when airport instructed to take it off', function () {  
       expect(this.plane.isAirborne).equals(true);
     })
 
     it('should be able to check that plane is no longer in the airport', function () {  
-      this.airport.land(this.plane);
-      this.airport.takeOff(this.plane);
-
       expect(this.airport.hasPlane(this.plane)).equals(false);
     })
   })

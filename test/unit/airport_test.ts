@@ -24,19 +24,21 @@ describe('Airport', function() {
     })
   
     it('should add that plane to planes array', function () {  
-      expect(this.airport.planes[0]).equals(this.planeDbl)
+      expect(this.airport.hasPlane(this.planeDbl)).equals(true)
     })
   })
 
   describe('Given has been instructed to take off a plane,', function() {
-    it('should instruct that plane to take off', function () {
+    beforeEach(function() {
+      this.airport.land(this.planeDbl);
       this.airport.takeOff(this.planeDbl);
+    })
+
+    it('should instruct that plane to take off', function () {
       expect(this.takeOffSpy).calledOnce
     })
 
     it('should remove plane, and be able to confirm that plane is no longer in airport', function () {
-      this.airport.land(this.planeDbl);
-      this.airport.takeOff(this.planeDbl);
       expect(this.airport.hasPlane(this.planeDbl)).equals(false)
     })
   })
