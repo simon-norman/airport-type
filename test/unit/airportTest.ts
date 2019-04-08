@@ -50,17 +50,25 @@ describe('Airport', function() {
   })
 
   describe('Given weather is stormy and airport is NOT full', function() {
-    it('should throw error when attempting to land plane', function () {
-      const createFnWithArg = (fn, argument) => {
-        return function() {
-          fn(argument)
-        }
-      };
+    const createFnWithArg = (fn, argument) => {
+      return function() {
+        fn(argument)
+      }
+    };
 
+    beforeEach(function() {
       const isStormyDbl = () => { return true }
       this.airport = new Airport({ isStormy: isStormyDbl });
+    })
+
+    it('should throw error when attempting to land plane', function () {
       const landPlane = createFnWithArg(this.airport.land, this.planeDbl)
       expect(landPlane).to.throw('Cannot land as weather is stormy')
+    })
+
+    it('should throw error when attempting to take off plane', function () {
+      const takeOffPlane = createFnWithArg(this.airport.takeOff, this.planeDbl)
+      expect(takeOffPlane).to.throw('Cannot take off as weather is stormy')
     })
   })
 

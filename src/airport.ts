@@ -28,7 +28,7 @@ export default class Airport {
     this.planes.push(plane)
   }
 
-  checkCanLand = (): any => {
+  private checkCanLand = (): any => {
     if (this.isStormy()) { throw 'Cannot land as weather is stormy' }
     if (this.isFull()) { throw 'Cannot land as airport is full' }
   }
@@ -38,6 +38,8 @@ export default class Airport {
   }
 
   takeOff = (plane: Plane): void => {
+    if (this.isStormy()) { throw 'Cannot take off as weather is stormy' }
+
     plane.takeOff()
     this.planes.splice(this.planes.indexOf(plane), 1)
   }
