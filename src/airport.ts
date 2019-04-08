@@ -1,5 +1,6 @@
 interface Plane {
   land(): any; 
+  takeOff(): any;
 }
 
 export default class Airport {
@@ -12,5 +13,9 @@ export default class Airport {
   land(plane: Plane): void {
     plane.land()
     this.planes.push(plane)
+  }
+
+  takeOff(plane: Plane): void {
+    plane.takeOff()
   }
 }
