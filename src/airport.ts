@@ -6,21 +6,21 @@ interface Plane {
 export default class Airport {
   planes: Plane[];
 
-  constructor() {
-    this.planes = []
+  constructor(planes = []) {
+    this.planes = planes;
   }
 
-  land(plane: Plane): void {
+  land = (plane: Plane): void => {
     plane.land()
     this.planes.push(plane)
   }
 
-  takeOff(plane: Plane): void {
+  takeOff = (plane: Plane): void => {
     plane.takeOff()
     this.planes.splice(this.planes.indexOf(plane), 1)
   }
 
-  hasPlane(plane: Plane): boolean {
+  hasPlane = (plane: Plane): boolean => {
     return this.planes.includes(plane);
   }
 }

@@ -4,9 +4,11 @@ import Plane from '../../src/plane';
 
 describe('Airport features', function() {
   beforeEach(function() {
-    this.airport = new Airport();
+    const plane = new Plane()
+    this.airport = new Airport([plane]);
     this.plane = new Plane(true);
   })
+
   describe('When instructing airport to land a plane', function() {
     beforeEach(function() {
       this.airport.land(this.plane);
@@ -17,7 +19,7 @@ describe('Airport features', function() {
     })
   
     it('should store plane inside airport once plane is landed', function () {
-      expect(this.airport.planes[0]).equals(this.plane);
+      expect(this.airport.hasPlane(this.plane)).equals(true);
     })
   })
 
@@ -33,6 +35,19 @@ describe('Airport features', function() {
 
     it('should be able to check that plane is no longer in the airport', function () {  
       expect(this.airport.hasPlane(this.plane)).equals(false);
+    })
+  })
+
+  describe('Given weather is stormy', function() {
+    it('should throw error when attempting to land plane', function () {  
+      const createFnWithArg = (fn, argument) => {
+        return function() {
+          fn(argument)
+        }
+      };
+
+      const landPlane = createFnWithArg(this.airport.land, this.plane)
+      expect(landPlane).to.throw('Cannot land as weather is stormy')
     })
   })
 })
