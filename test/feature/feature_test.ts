@@ -3,21 +3,19 @@ import Airport from '../../src/airport';
 import Plane from '../../src/plane';
 
 describe('Airport features', function() {
-  it('should set plane as landed when airport instructed to land it', function () {
-    const plane = new Plane();
-    const airport = new Airport();
+  describe('When instructing airport to land a plane', function() {
+    beforeEach(function() {
+      this.airport = new Airport();
+      this.plane = new Plane();
+      this.airport.land(this.plane);
+    })
 
-    airport.land(plane);
-
-    expect(plane.isAirborne).equals(false);
-  })
-
-  it('should store plane inside airport once plane is landed', function () {
-    const plane = new Plane();
-    const airport = new Airport();
-
-    airport.land(plane);
-
-    expect(airport.planes[0]).equals(plane);
+    it('should set plane as landed when airport instructed to land it', function () {  
+      expect(this.plane.isAirborne).equals(false);
+    })
+  
+    it('should store plane inside airport once plane is landed', function () {
+      expect(this.airport.planes[0]).equals(this.plane);
+    })
   })
 })
