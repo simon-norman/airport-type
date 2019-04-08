@@ -5,7 +5,7 @@ import Plane from '../../src/plane';
 describe('Airport features', function() {
   beforeEach(function() {
     const plane = new Plane()
-    this.airport = new Airport([plane]);
+    this.airport = new Airport({ planes: [plane] });
     this.plane = new Plane(true);
   })
 
@@ -35,19 +35,6 @@ describe('Airport features', function() {
 
     it('should be able to check that plane is no longer in the airport', function () {  
       expect(this.airport.hasPlane(this.plane)).equals(false);
-    })
-  })
-
-  describe('Given weather is stormy', function() {
-    it('should throw error when attempting to land plane', function () {  
-      const createFnWithArg = (fn, argument) => {
-        return function() {
-          fn(argument)
-        }
-      };
-
-      const landPlane = createFnWithArg(this.airport.land, this.plane)
-      expect(landPlane).to.throw('Cannot land as weather is stormy')
     })
   })
 })
