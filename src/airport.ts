@@ -17,5 +17,10 @@ export default class Airport {
 
   takeOff(plane: Plane): void {
     plane.takeOff()
+    this.planes.splice(this.planes.indexOf(plane), 1)
+  }
+
+  hasPlane(plane: Plane): boolean {
+    return this.planes.includes(plane);
   }
 }
