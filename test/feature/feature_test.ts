@@ -5,7 +5,7 @@ import Plane from '../../src/plane';
 describe('Airport features', function() {
   beforeEach(function() {
     this.airport = new Airport();
-    this.plane = new Plane();
+    this.plane = new Plane(true);
   })
   describe('When instructing airport to land a plane', function() {
     beforeEach(function() {
@@ -25,7 +25,7 @@ describe('Airport features', function() {
     it('should set plane as airborne when airport instructed to take it off', function () {  
       this.airport.land(this.plane);
       this.airport.takeOff(this.plane);
-      
+
       expect(this.plane.isAirborne).equals(true);
     })
   })
