@@ -16,4 +16,14 @@ describe('Airport', function() {
 
     expect(landSpy).calledOnce
   })
+
+  it('should, once plane has landed, add that plane to planes array', function () {
+    const airport = new Airport();
+    const landSpy = sinon.spy();
+    const planeDbl = { land: landSpy }
+
+    airport.land(planeDbl);
+
+    expect(airport.planes[0]).equals(planeDbl)
+  })
 })

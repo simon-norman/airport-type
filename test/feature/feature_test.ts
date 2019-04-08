@@ -11,4 +11,13 @@ describe('Airport features', function() {
 
     expect(plane.isAirborne).equals(false);
   })
+
+  it('should store plane inside airport once plane is landed', function () {
+    const plane = new Plane();
+    const airport = new Airport();
+
+    airport.land(plane);
+
+    expect(airport.planes[0]).equals(plane);
+  })
 })
