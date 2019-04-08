@@ -3,14 +3,18 @@ interface Plane {
   takeOff(): any;
 }
 
+interface isStormy {
+  (): boolean
+}
+
 interface airportParams {
   planes?: Plane[],
-  isStormy?: object
+  isStormy?: isStormy
 }
 
 export default class Airport {
-  planes: Plane[];
-  isStormy: object;
+  private planes: Plane[];
+  private isStormy: isStormy;
 
   constructor({ planes = [], isStormy }: airportParams) {
     this.planes = planes;
@@ -18,10 +22,19 @@ export default class Airport {
   }
 
   land = (plane: Plane): void => {
-    if (this.isStormy) { throw 'Cannot land as weather is stormy' }
+    this.checkCanLand()
 
     plane.land()
     this.planes.push(plane)
+  }
+
+  checkCanLand = (): any => {
+    if (this.isStormy()) { throw 'Cannot land as weather is stormy' }
+    if (this.isFull()) { throw 'Cannot land as airport is full' }
+  }
+
+  private isFull = (): boolean => {
+    return this.planes.length === 10;
   }
 
   takeOff = (plane: Plane): void => {

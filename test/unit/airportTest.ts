@@ -8,43 +8,48 @@ const expect = chai.expect;
 
 describe('Airport', function() {
   beforeEach(function() {
-    const planeDbl1 = { land: () => {}, takeOff: () => {} }
-    this.airport = new Airport({ planes: [planeDbl1] });
     this.landSpy = sinon.spy();
     this.takeOffSpy = sinon.spy();
-    this.planeDbl2 = { land: this.landSpy, takeOff: this.takeOffSpy }
+    this.planeDbl = { land: this.landSpy, takeOff: this.takeOffSpy }
   })
 
-  describe('When instructed to land a plane,', function() {
+  describe('Given weather is sunny and airport is NOT full,', function() {
     beforeEach(function() {
-      this.airport.land(this.planeDbl2);
+      const isStormyDbl = () => { return false }
+      this.airport = new Airport({ isStormy: isStormyDbl });
     })
 
-    it('should instruct that plane to land', function () {
-      expect(this.landSpy).calledOnce
+    describe('When instructed to land a plane,', function() {
+      beforeEach(function() {
+        this.airport.land(this.planeDbl);
+      })
+
+      it('should instruct that plane to land', function () {
+        expect(this.landSpy).calledOnce
+      })
+    
+      it('should add that plane to planes array', function () {  
+        expect(this.airport.hasPlane(this.planeDbl)).equals(true)
+      })
     })
-  
-    it('should add that plane to planes array', function () {  
-      expect(this.airport.hasPlane(this.planeDbl2)).equals(true)
+
+    describe('Given has been instructed to take off a plane,', function() {
+      beforeEach(function() {
+        this.airport.land(this.planeDbl);
+        this.airport.takeOff(this.planeDbl);
+      })
+
+      it('should instruct that plane to take off', function () {
+        expect(this.takeOffSpy).calledOnce
+      })
+
+      it('should remove plane, and be able to confirm that plane is no longer in airport', function () {
+        expect(this.airport.hasPlane(this.planeDbl)).equals(false)
+      })
     })
   })
 
-  describe('Given has been instructed to take off a plane,', function() {
-    beforeEach(function() {
-      this.airport.land(this.planeDbl2);
-      this.airport.takeOff(this.planeDbl2);
-    })
-
-    it('should instruct that plane to take off', function () {
-      expect(this.takeOffSpy).calledOnce
-    })
-
-    it('should remove plane, and be able to confirm that plane is no longer in airport', function () {
-      expect(this.airport.hasPlane(this.planeDbl2)).equals(false)
-    })
-  })
-
-  describe('Given weather is stormy,', function() {
+  describe('Given weather is stormy and airport is NOT full', function() {
     it('should throw error when attempting to land plane', function () {
       const createFnWithArg = (fn, argument) => {
         return function() {
@@ -54,8 +59,28 @@ describe('Airport', function() {
 
       const isStormyDbl = () => { return true }
       this.airport = new Airport({ isStormy: isStormyDbl });
-      const landPlane = createFnWithArg(this.airport.land, this.planeDbl2)
+      const landPlane = createFnWithArg(this.airport.land, this.planeDbl)
       expect(landPlane).to.throw('Cannot land as weather is stormy')
+    })
+  })
+
+  describe('Given airport is full and weather is NOT stormy', function() {
+    it('should throw error when attempting to land plane', function () {
+      const createFnWithArg = (fn, argument) => {
+        return function() {
+          fn(argument)
+        }
+      };
+
+      const planes = []
+      for(let i = 1; i <= 10; i += 1) {
+        planes.push(this.planeDbl)
+      }
+      const isStormyDbl = () => { return false }
+
+      this.airport = new Airport({ planes, isStormy: isStormyDbl });
+      const landPlane = createFnWithArg(this.airport.land, this.planeDbl)
+      expect(landPlane).to.throw('Cannot land as airport is full')
     })
   })
 })

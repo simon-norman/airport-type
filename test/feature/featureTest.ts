@@ -1,12 +1,21 @@
 import { expect } from 'chai';
 import Airport from '../../src/airport';
 import Plane from '../../src/plane';
+import isStormy from '../../src/isStormy';
+import sinon = require('sinon')
 
 describe('Airport features', function() {
   beforeEach(function() {
     const plane = new Plane()
-    this.airport = new Airport({ planes: [plane] });
+    this.airport = new Airport({ isStormy, planes: [plane] });
     this.plane = new Plane(true);
+    
+    const randomStub = this.randomStub = sinon.stub(Math, 'random');
+    randomStub.returns(0)
+  })
+
+  afterEach(function() {
+    this.randomStub.restore();
   })
 
   describe('When instructing airport to land a plane', function() {
